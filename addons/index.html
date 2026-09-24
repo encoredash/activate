@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encore Add-ons</title>
+<meta name="description" content="Add tasks, monitoring events and instances to your Encore membership. Automatic activation after purchase.">
+<link rel="icon" type="image/svg+xml" href="assets/img/encore-icon.svg">
+<style>
+@font-face{font-family:'Moderat';src:url('assets/font/Moderat-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Moderat';src:url('assets/font/Moderat-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:'Moderat';src:url('assets/font/Moderat-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:'Moderat';src:url('assets/font/Moderat-Black.ttf') format('truetype');font-weight:900;font-display:swap}
+@font-face{font-family:'Moderat Mono';src:url('assets/font/Moderat-Mono-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+:root{--bg:#06080a;--card:#0c1213;--card2:#10171a;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--text:#fff;--dim:#9aa1a6;--accent:#16f9c1;--accent-ink:#00130d;--mono:'Moderat Mono',ui-monospace,monospace}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Moderat',-apple-system,system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.bg{position:absolute;inset:0 0 auto 0;height:760px;background:url('assets/img/wave.jpg') right top/auto 100% no-repeat;opacity:.5;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,#000 40%,transparent 100%),linear-gradient(90deg,transparent 20%,#000 70%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(180deg,#000 40%,transparent 100%),linear-gradient(90deg,transparent 20%,#000 70%);mask-composite:intersect}
+header{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+header img{height:30px;display:block}
+.tag{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero{position:relative;z-index:2;padding:70px 0 60px;max-width:720px}
+h1{font-weight:900;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-.025em;margin:18px 0 20px}
+.lead{font-size:clamp(17px,2vw,20px);color:#c9d0d4;max-width:600px}
+section{position:relative;z-index:2;padding:40px 0}
+h2{font-weight:900;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.02em;line-height:1.1;margin:10px 0 8px}
+.sub{color:var(--dim);font-size:16px;max-width:640px;margin-bottom:28px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.step .n{font-family:var(--mono);color:var(--accent);font-size:13px;letter-spacing:.1em}
+.step h3{font-size:18px;font-weight:700;margin:12px 0 6px;line-height:1.25}
+.step p{color:var(--dim);font-size:14.5px}
+code{font-family:var(--mono);font-size:.92em;background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:#e6eaec}
+.stack{margin:14px 0 14px;min-height:118px;display:flex;flex-direction:column;justify-content:center;gap:5px}
+.stack .seg{display:flex;align-items:center;justify-content:space-between;height:28px;padding:0 10px;border-radius:8px;font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+.stack .base{background:var(--card2);border:1px solid var(--line2);color:var(--dim)}
+.stack .add{background:rgba(22,249,193,.14);border:1px solid rgba(22,249,193,.45);color:var(--accent);animation:drop .5s ease both}
+.stack .add.a2{background:rgba(22,249,193,.24);animation-delay:.12s}
+.stack .sum{display:flex;justify-content:space-between;border-top:1px dashed var(--line2);padding-top:6px;margin-top:2px;font-family:var(--mono);font-size:12px;color:#e6eaec}
+@keyframes drop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.stack .add{animation:none}}
+.viz{margin:14px 0 14px;min-height:118px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.chip{display:flex;align-items:center;gap:8px;height:28px;padding:0 10px;border-radius:8px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--card2);border:1px solid var(--line2);color:#c9d0d4}
+.chip.on{background:rgba(22,249,193,.14);border-color:rgba(22,249,193,.45);color:var(--accent)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.link{height:14px;margin-left:18px;border-left:1px dashed rgba(22,249,193,.6)}
+.toggle{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:10px;background:var(--card2);border:1px solid var(--line2)}
+.toggle span{text-align:center;padding:6px 0;border-radius:7px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.toggle span.on{background:var(--accent);color:var(--accent-ink);font-weight:500}
+.sizes{display:flex;gap:4px}.sizes span{flex:1;text-align:center;padding:5px 0;border-radius:7px;border:1px solid var(--line2);font-family:var(--mono);font-size:11px;color:var(--dim)}.sizes span.on{border-color:rgba(22,249,193,.6);color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{position:relative;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:20px;padding:24px;transition:border-color .18s,transform .18s,box-shadow .18s}
+.card:hover{border-color:rgba(22,249,193,.55);transform:translateY(-2px);box-shadow:0 18px 50px -24px rgba(22,249,193,.45)}
+.card .kind{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.card .size{font-weight:900;font-size:44px;letter-spacing:-.02em;line-height:1;margin:14px 0 4px}
+.card .size small{font-size:20px;font-weight:700;color:#c9d0d4;letter-spacing:0;margin-left:6px}
+.prices{margin:18px 0 22px;display:flex;flex-direction:column;gap:8px}
+.price{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.2)}
+.price b{font-size:20px;font-weight:700}
+.price span{color:var(--dim);font-size:14px}
+.buy{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:700;border-radius:999px;padding:12px 18px;font-size:15px}
+.card:hover .buy{background:#3afad0}
+.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:28px;flex-wrap:wrap}
+.wide .info{flex:1;min-width:240px}
+.wide .prices{margin:0;min-width:240px}
+.wide .buy{margin-top:0;min-width:200px}
+.note{margin-top:14px;color:var(--dim);font-size:14px}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qa{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.qa h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.qa p{color:var(--dim);font-size:15px}
+footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:40px;padding:28px 0 40px;color:var(--dim);font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--text);border-bottom:1px solid var(--line2)}
+@media (max-width:980px){.steps{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.wrap{padding:0 16px}.steps,.grid,.faq{grid-template-columns:1fr}.hero{padding:40px 0 30px}.bg{height:520px;opacity:.35}.wide{flex-direction:column;align-items:stretch}.wide .buy{min-width:0}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <header>
+    <img src="assets/img/encore-wide.svg" alt="Encore">
+    <span class="tag">Add-ons</span>
+  </header>
+
+  <div class="hero">
+    <span class="tag">[ Add-ons ]</span>
+    <h1>Add more to your Encore membership</h1>
+    <p class="lead">Extra tasks, monitoring events and instances on top of your plan. Buy a package on Whop — it activates automatically and stacks with what you already have.</p>
+  </div>
+
+  <section id="how">
+    <span class="tag">[ How it works ]</span>
+    <h2>Four things to know</h2>
+    <p class="sub">Same rules for every package.</p>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>Use the right Discord</h3><div class="viz" aria-hidden="true"><div class="chip">Discord · Encore server</div><div class="link"></div><div class="chip on"><span class="dot"></span>Whop · same account</div></div><p>Sign in to Whop with the Discord account connected to the Encore server — otherwise the package won’t activate automatically.</p></div>
+      <div class="step"><div class="n">02</div><h3>Pick a package</h3><div class="viz" aria-hidden="true"><div class="sizes"><span>1k</span><span class="on">3k</span><span>5k</span><span>10k</span></div><div class="toggle"><span>Weekly</span><span class="on">Monthly</span></div></div><p>Choose a size below. Task packages come as a weekly or monthly plan — you choose at checkout.</p></div>
+      <div class="step"><div class="n">03</div><h3>Automatic activation</h3><div class="viz" aria-hidden="true"><div class="chip">Purchase · Whop</div><div class="link"></div><div class="chip on"><span class="dot"></span>Active · same day</div></div><p>The package is activated the same day after purchase — no tickets, no waiting.</p></div>
+      <div class="step"><div class="n">04</div><h3>Packages stack</h3><div class="stack" aria-hidden="true"><div class="seg add a2"><span>+3k tasks</span><span>package</span></div><div class="seg add"><span>+1k tasks</span><span>package</span></div><div class="seg base"><span>Your plan</span><span>base</span></div><div class="sum"><span>= plan + 4k tasks</span><span>active</span></div></div><p>Tasks, events and instances add up. To increase, buy another package. To decrease, cancel one in <code>Manage membership</code> on Whop and buy the size that fits.</p></div>
+    </div>
+  </section>
+
+  <section id="tasks">
+    <span class="tag">[ Tasks ]</span>
+    <h2>Additional tasks</h2>
+    <p class="sub">Added on top of your plan’s task limit. Weekly or monthly billing.</p>
+    <div class="grid">
+      <a class="card" href="https://whop.com/encore-app/1k-tasks-package/" target="_blank" rel="noopener"><span class="kind">Tasks</span><div class="size">+1k<small>tasks</small></div><div class="prices"><div class="price"><b>$99</b><span>/ week</span></div><div class="price"><b>$390</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/3k-tasks-package/" target="_blank" rel="noopener"><span class="kind">Tasks</span><div class="size">+3k<small>tasks</small></div><div class="prices"><div class="price"><b>$297</b><span>/ week</span></div><div class="price"><b>$1,170</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/5k-tasks-package/" target="_blank" rel="noopener"><span class="kind">Tasks</span><div class="size">+5k<small>tasks</small></div><div class="prices"><div class="price"><b>$495</b><span>/ week</span></div><div class="price"><b>$1,950</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/10k-tasks-package/" target="_blank" rel="noopener"><span class="kind">Tasks</span><div class="size">+10k<small>tasks</small></div><div class="prices"><div class="price"><b>$990</b><span>/ week</span></div><div class="price"><b>$3,900</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/15k-tasks-package/" target="_blank" rel="noopener"><span class="kind">Tasks</span><div class="size">+15k<small>tasks</small></div><div class="prices"><div class="price"><b>$1,485</b><span>/ week</span></div><div class="price"><b>$5,850</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/25k-tasks-package/" target="_blank" rel="noopener"><span class="kind">Tasks</span><div class="size">+25k<small>tasks</small></div><div class="prices"><div class="price"><b>$2,475</b><span>/ week</span></div><div class="price"><b>$9,750</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+    </div>
+  </section>
+
+  <section id="events">
+    <span class="tag">[ Monitoring ]</span>
+    <h2>Additional monitoring events</h2>
+    <p class="sub">More events for internal monitoring on top of your plan’s limit. Monthly billing.</p>
+    <div class="grid">
+      <a class="card" href="https://whop.com/encore-app/10-events-package/" target="_blank" rel="noopener"><span class="kind">Events</span><div class="size">+10<small>events</small></div><div class="prices"><div class="price"><b>$140</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/50-events-package/" target="_blank" rel="noopener"><span class="kind">Events</span><div class="size">+50<small>events</small></div><div class="prices"><div class="price"><b>$700</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+      <a class="card" href="https://whop.com/encore-app/100-events-package/" target="_blank" rel="noopener"><span class="kind">Events</span><div class="size">+100<small>events</small></div><div class="prices"><div class="price"><b>$1,400</b><span>/ month</span></div></div><span class="buy">Buy on Whop ↗</span></a>
+    </div>
+  </section>
+
+  <section id="instance">
+    <span class="tag">[ Instance ]</span>
+    <h2>Additional instance</h2>
+    <p class="sub">One more Encore instance on your membership. Paid once, no renewals.</p>
+    <div class="grid">
+      <a class="card wide" href="https://whop.com/encore-app/additional-instance-f5/" target="_blank" rel="noopener">
+        <div class="info"><span class="kind">Instance · lifetime</span><div class="size">+1<small>instance</small></div></div>
+        <div class="prices"><div class="price"><b>$4,310</b><span>one-time</span></div></div>
+        <span class="buy">Buy on Whop ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="faq">
+    <span class="tag">[ FAQ ]</span>
+    <h2>Questions</h2>
+    <div class="faq">
+      <div class="qa"><h3>My package didn’t activate</h3><p>Check that you bought it while logged into Whop with the Discord account connected to the Encore server. Step-by-step guide: <a href="../" style="color:var(--accent)">connect Discord on Whop</a>. If it still hasn’t activated, open a ticket on our Discord.</p></div>
+      <div class="qa"><h3>Can I combine packages?</h3><p>Yes. All packages stack automatically — buy a second package and it is added on top of your current amount.</p></div>
+      <div class="qa"><h3>How do I reduce a package?</h3><p>Cancel the package you want to reduce in <code>Manage membership</code> on Whop, then buy the size that fits you.</p></div>
+      <div class="qa"><h3>Who processes the payment?</h3><p>Checkout and payments are handled by Whop. Billing, renewals and cancellations are managed in your Whop account.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Prices in USD. Checkout and payments are processed by Whop.</span>
+    <span>Questions — <a href="https://discord.gg/tc9afaK2yQ" target="_blank" rel="noopener">Discord</a></span>
+  </footer>
+</div>
+</body>
+</html>
